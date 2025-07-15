@@ -1,0 +1,19 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 2rem;
+    background-color: #0f0707ce;
+}
+
+form {
+    margin-bottom: 1rem;
+}
+
+input, button {
+    margin: 0.5rem;
+    padding: 0.5rem;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}

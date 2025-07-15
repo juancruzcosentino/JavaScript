@@ -4,12 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Javascript</title>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-    <div>
-        <h1 style="font-size: 3rem;">Javascript Pre-entrega 1</h1>
-        <p style="font-size: 20px;">Esta primera pre-entega va a simular un "boletin" o registro estudiantil, donde el propio estudiante podra buscar su nombre y se le devolveran las 3 notas principales, para que luego el sistema le arroje si esta aprobado o no.</p>
-    </div>    
+    <form id="formulario">
+        <h2>Registrar estudiante</h2>
+        <input id="nombre" type="text" placeholder="Nombre" required />
+        <input id="nota1" type="number" placeholder="Nota 1" required />
+        <input id="nota2" type="number" placeholder="Nota 2" required />
+        <input id="nota3" type="number" placeholder="Nota 3" required />
+        <button type="submit">Registrar</button>
+    </form>
+
+<button id="borrarTodo">Borrar todo</button>
+<button id="filtrarAprobados">Ver Aprobados</button>
+
+<ul id="listaEstudiantes"></ul>   
 <script src="javascript/main.js"></script>
 </body>
 </html>

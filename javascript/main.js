@@ -1,42 +1,69 @@
-const estudiantes = [];
+const estudiantes = JSON.parse(localStorage.getItem("estudiantes")) || [];
 
-function registrarEstudiante() {
-    const nombre = prompt("Ingrese el nombre del estudiante:");
+// DOM
+const form = document.getElementById("formulario");
+const nombreInput = document.getElementById("nombre");
+const nota1Input = document.getElementById("nota1");
+const nota2Input = document.getElementById("nota2");
+const nota3Input = document.getElementById("nota3");
+const listaEstudiantes = document.getElementById("listaEstudiantes");
 
-    const primerNota = parseFloat(prompt("Ingrese su primer nota:"));
-    const segundaNota = parseFloat(prompt("Ingrese su segunda nota:"));
-    const tercerNota = parseFloat(prompt("Ingrese su tercera nota:"));
+// Funciones de orden superior
+const calcularPromedio = (notas) => notas.reduce((a, b) => a + b, 0) / notas.length;
 
-    const promedio = calcularPromedio(primerNota, segundaNota, tercerNota);
+function agregarEstudiante(nombre, notas) {
+    const promedio = calcularPromedio(notas);
+    const estado = promedio >= 6 ? "Aprobado" : "Desaprobado";
 
-    let estado;
-    
-    if (promedio >= 6) {
-        estado = "Aprobado";
+    const nuevoEstudiante = { nombre, notas, promedio, estado };
+    estudiantes.push(nuevoEstudiante);
+    localStorage.setItem("estudiantes", JSON.stringify(estudiantes));
+    mostrarEstudiantes();
+}
+
+// Mostrar estudiantes (con uso de map)
+function mostrarEstudiantes() {
+    listaEstudiantes.innerHTML = "";
+    estudiantes.map(est => {
+        const li = document.createElement("li");
+        li.textContent = `📘 ${est.nombre} - Notas: ${est.notas.join(", ")} - Promedio: ${est.promedio.toFixed(2)} - Estado: ${est.estado}`;
+        listaEstudiantes.appendChild(li);
+    });
+}
+
+// Evento
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const nombre = nombreInput.value.trim();
+    const notas = [nota1Input.value, nota2Input.value, nota3Input.value].map(n => parseFloat(n));
+
+    if (nombre && notas.every(n => !isNaN(n))) {
+        agregarEstudiante(nombre, notas);
+        form.reset();
     } else {
-        estado = "Desaprobado";
+        alert("Por favor complete todos los campos correctamente.");
     }
+});
 
-estudiantes.push({ nombre, notas: [primerNota, segundaNota, tercerNota], promedio, estado})
+// Botón para borrar todo el storage
+document.getElementById("borrarTodo").addEventListener("click", () => {
+    localStorage.clear();
+    estudiantes.length = 0;
+    mostrarEstudiantes();
+});
 
-alert(
-    `Estudiante: ${nombre} Promedio: ${promedio} Estado: ${estado}`);
-}
+// Botón para filtrar aprobados (uso de filter)
+document.getElementById("filtrarAprobados").addEventListener("click", () => {
+    const aprobados = estudiantes.filter(e => e.estado === "Aprobado");
+    listaEstudiantes.innerHTML = "";
+    aprobados.forEach(est => {
+        const li = document.createElement("li");
+        li.textContent = `✅ ${est.nombre} - Promedio: ${est.promedio.toFixed(2)}`;
+        listaEstudiantes.appendChild(li);
+    });
+});
 
-function calcularPromedio (n1, n2, n3) {
-    return (n1 + n2 + n3) / 3;
-}
+// Cargar al inicio
+mostrarEstudiantes();
 
-function iniciarSimulador() {
-    let continuar = true;
-
-    while (continuar) {
-    registrarEstudiante();
-    continuar = confirm("¿Desea registrar otro estudiante?");
-    }
-
-    console.log("Lista de estudiantes registrados:");
-    console.log(estudiantes);
-}
-
-iniciarSimulador();
