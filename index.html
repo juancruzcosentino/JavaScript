@@ -1,25 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Javascript</title>
-    <link rel="stylesheet" href="./css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Boletín Estudiantil</title>
+  <link rel="stylesheet" href="./css/style.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-    <form id="formulario">
-        <h2>Registrar estudiante</h2>
-        <input id="nombre" type="text" placeholder="Nombre" required />
-        <input id="nota1" type="number" placeholder="Nota 1" required />
-        <input id="nota2" type="number" placeholder="Nota 2" required />
-        <input id="nota3" type="number" placeholder="Nota 3" required />
-        <button type="submit">Registrar</button>
-    </form>
 
-<button id="borrarTodo">Borrar todo</button>
-<button id="filtrarAprobados">Ver Aprobados</button>
+  <h1>Boletín Estudiantil</h1>
 
-<ul id="listaEstudiantes"></ul>   
-<script src="javascript/main.js"></script>
+  <div id="form-container">
+    <input type="text" id="nombre" placeholder="Nombre del alumno" />
+    <input type="number" id="nota" placeholder="Nota (0-10)" min="0" max="10" />
+    <button id="agregar">Agregar Alumno</button>
+  </div>
+
+  <h2>Lista de Alumnos</h2>
+  <table id="tabla-alumnos" border="1" cellspacing="0" cellpadding="5">
+    <thead>
+      <tr><th>Nombre</th><th>Nota</th><th>Estado</th><th>Acción</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <button id="vaciar-storage">Vaciar Storage</button>
+
+  <script src="js/storage.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
