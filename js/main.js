@@ -1,60 +1,82 @@
-$(document).ready(function () {
-
+document.addEventListener("DOMContentLoaded", () => {
   let alumnos = recuperarAlumnos();
+
+  const nombreInput = document.querySelector("#nombre");
+  const notaInput = document.querySelector("#nota");
+  const tablaBody = document.querySelector("#tabla-alumnos tbody");
+  const btnAgregar = document.querySelector("#agregar");
+  const btnVaciar = document.querySelector("#vaciar-storage");
+  const mensajeDiv = document.querySelector("#mensaje");
+
+  function mostrarMensaje(texto, tipo) {
+    mensajeDiv.textContent = texto;
+    mensajeDiv.className = tipo; // por ej. 'error', 'exito', 'info' para estilos CSS
+    setTimeout(() => {
+      mensajeDiv.textContent = "";
+      mensajeDiv.className = "";
+    }, 3000);
+  }
 
   function estadoNota(nota) {
     return nota >= 6 ? "Aprobado" : "Reprobado";
   }
 
   function renderizarTabla() {
-    const filas = alumnos.map(({ nombre, nota }) => `
-      <tr>
+    tablaBody.innerHTML = "";
+
+    alumnos.forEach(({ nombre, nota }) => {
+      const fila = document.createElement("tr");
+
+      fila.innerHTML = `
         <td>${nombre}</td>
         <td>${nota}</td>
         <td>${estadoNota(nota)}</td>
         <td><button class="borrar" data-nombre="${nombre}">Borrar</button></td>
-      </tr>
-    `).join("");
-    $("#tabla-alumnos tbody").html(filas);
+      `;
+
+      tablaBody.appendChild(fila);
+    });
   }
 
-  $("#agregar").click(() => {
-    const nombre = $("#nombre").val().trim();
-    const nota = parseFloat($("#nota").val());
+  btnAgregar.addEventListener("click", () => {
+    const nombre = nombreInput.value.trim();
+    const nota = parseFloat(notaInput.value);
 
     if (!nombre || isNaN(nota) || nota < 0 || nota > 10) {
-      Swal.fire("Error", "Ingrese un nombre válido y una nota entre 0 y 10", "error");
+      mostrarMensaje("Ingrese un nombre válido y una nota entre 0 y 10", "error");
       return;
     }
 
     const existe = alumnos.some(a => a.nombre.toLowerCase() === nombre.toLowerCase());
     if (existe) {
-      Swal.fire("Atención", "El alumno ya está registrado", "warning");
+      mostrarMensaje("El alumno ya está registrado", "info");
       return;
     }
 
     alumnos.push({ nombre, nota });
     guardarAlumnos(alumnos);
     renderizarTabla();
-    Swal.fire("Éxito", "Alumno agregado correctamente", "success");
+    mostrarMensaje("Alumno agregado correctamente", "exito");
 
-    $("#nombre").val("");
-    $("#nota").val("");
+    nombreInput.value = "";
+    notaInput.value = "";
   });
 
-  $("#tabla-alumnos").on("click", ".borrar", function () {
-    const nombre = $(this).data("nombre");
-    alumnos = alumnos.filter(a => a.nombre !== nombre);
-    guardarAlumnos(alumnos);
-    renderizarTabla();
-    Swal.fire("Alumno borrado", `Se eliminó a ${nombre}`, "info");
+  tablaBody.addEventListener("click", (e) => {
+    if (e.target.classList.contains("borrar")) {
+      const nombre = e.target.dataset.nombre;
+      alumnos = alumnos.filter(a => a.nombre !== nombre);
+      guardarAlumnos(alumnos);
+      renderizarTabla();
+      mostrarMensaje(`Se eliminó a ${nombre}`, "info");
+    }
   });
 
-  $("#vaciar-storage").click(() => {
+  btnVaciar.addEventListener("click", () => {
     vaciarStorage();
     alumnos = [];
     renderizarTabla();
-    Swal.fire("Storage vacío", "Se borraron todos los alumnos", "info");
+    mostrarMensaje("Se borraron todos los alumnos", "info");
   });
 
   async function cargarDatosMock() {
@@ -73,7 +95,7 @@ $(document).ready(function () {
       renderizarTabla();
     } catch (error) {
       console.error(error);
-      Swal.fire("Error", "No se pudo cargar datos del mock", "error");
+      mostrarMensaje("No se pudo cargar datos del mock", "error");
     }
   }
 

@@ -18,16 +18,6 @@ function recuperarAlumnos() {
   }
 }
 
-function borrarAlumno(nombre) {
-  try {
-    let alumnos = recuperarAlumnos();
-    alumnos = alumnos.filter(a => a.nombre !== nombre);
-    guardarAlumnos(alumnos);
-  } catch (error) {
-    console.error("Error borrando alumno", error);
-  }
-}
-
 function vaciarStorage() {
   try {
     localStorage.removeItem(storageKey);

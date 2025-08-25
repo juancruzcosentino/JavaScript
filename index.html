@@ -2,31 +2,34 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Boletín Estudiantil</title>
-  <link rel="stylesheet" href="./css/style.css" />
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <title>Simulador Alumnos</title>
+  <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
 
-  <h1>Boletín Estudiantil</h1>
-
-  <div id="form-container">
-    <input type="text" id="nombre" placeholder="Nombre del alumno" />
-    <input type="number" id="nota" placeholder="Nota (0-10)" min="0" max="10" />
-    <button id="agregar">Agregar Alumno</button>
-  </div>
-
-  <h2>Lista de Alumnos</h2>
-  <table id="tabla-alumnos" border="1" cellspacing="0" cellpadding="5">
-    <thead>
-      <tr><th>Nombre</th><th>Nota</th><th>Estado</th><th>Acción</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
+  
+  <input type="text" id="nombre" placeholder="Nombre del alumno" />
+  <input type="number" id="nota" placeholder="Nota (0-10)" />
+  <button id="agregar">Agregar Alumno</button>
   <button id="vaciar-storage">Vaciar Storage</button>
+
+  
+  <div id="mensaje"></div>
+
+  
+  <table id="tabla-alumnos">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Nota</th>
+        <th>Estado</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+    </tbody>
+  </table>
 
   <script src="js/storage.js"></script>
   <script src="js/main.js"></script>
